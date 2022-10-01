@@ -1,7 +1,10 @@
-
+locals { 
+    service_name     = join("_", [var.module_prefix,var.module_name])
+    cron_name        = join("-", [basename(var.parent_module_path), local.service_name, var.env])
+}
 # Generates a cloudwatch event rule to trigger lambda
 resource "aws_cloudwatch_event_rule" "this" {
-  name                = join("", [basename(var.parent_module_path), "-", var.module_name, "-", var.env])
+  name                = local.cron_name
   schedule_expression = var.cron_expression
   description         = var.description
   tags                = var.resource_tags
@@ -16,7 +19,7 @@ resource "aws_cloudwatch_event_target" "this" {
 # Generates the permission for cloudwatch to invoke the lambda function
 resource "aws_lambda_permission" "this" {
   action        = "lambda:InvokeFunction"
-  function_name = var.lambda_function_function_name
+  function_name = var.lambda_function_name
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.this.arn
 }

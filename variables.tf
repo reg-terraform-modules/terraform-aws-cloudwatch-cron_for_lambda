@@ -19,7 +19,7 @@ variable "lambda_function_arn" {
   type        = string
 }
 
-variable "lambda_function_function_name" {
+variable "lambda_function_name" {
   description = "Function name of the lambda function to be invoked"
   type        = string
 }
@@ -30,13 +30,18 @@ variable "module_name" {
 }
 
 #Optional variables - default values used unless others specified:
-
 variable "resource_tags" {
   description = "Defaults to no tags. If needed, env vars can be given in parent module variables.tf, and assigned in child module call"
   type        = map(string)
   default = {
     "tag" = "none given"
   }
+}
+
+variable "module_prefix" {
+  description = "Name of child module - used to create resource name"
+  type        = string
+  default     = "cron_for"
 }
 
 variable "description" {
