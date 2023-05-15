@@ -1,6 +1,6 @@
 locals { 
     service_name     = join("_", [var.module_prefix,var.module_name])
-    cron_name        = join("-", [basename(var.parent_module_path), local.service_name, var.env])
+    cron_name        = join("-", [basename(var.parent_module_path), local.service_name])
 }
 # Generates a cloudwatch event rule to trigger lambda
 resource "aws_cloudwatch_event_rule" "this" {
